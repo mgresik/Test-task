@@ -1,0 +1,29 @@
+#include <iostream>
+#include <array>
+#include <string>
+#include <stdexcept>
+
+constexpr std::size_t get_index(const char* str) {
+    std::size_t index = 0;
+    while (*str >= '0' && *str <= '9') {
+        index = index * 10 + (*str - '0');
+        ++str;
+    }
+    return index;
+}
+
+constexpr std::array<int, 5> arr = {10, 20, 30, 40, 50};
+
+constexpr const char* index_str = "@INDEX@";
+
+constexpr int get_value(const std::array<int, 5>& array, const char* str) {
+    constexpr std::size_t index = get_index(index_str);
+    static_assert(index < arr.size(), "Ошибка: индекс вне диапазона массива");
+    return array[index];
+}
+
+int main() {
+    constexpr int value = get_value(arr, index_str);
+    std::cout << "Значение по индексу " << index_str << "равно " << value << std::endl;
+    return 0;
+}
